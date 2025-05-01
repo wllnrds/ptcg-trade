@@ -212,15 +212,17 @@ function HeadLine({ text, color = "#14B483" }: { text: string, color?: string })
             style={{
                 display: "flex",
                 gap: "32px",
-                flexDirection: "row",
                 width: "100%",
+                textAlign: "center",
                 alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "24px",
             }}
         >
             {/* <div
                 style={{
-                    background:
-                        "linear-gradient(90deg, #FEDCF5 0%, #FDFFC7 50%, #9BFFF1 100%) 0% 0% no-repeat padding-box",
+                    // background:
+                    //     "linear-gradient(90deg, #FEDCF5 0%, #FDFFC7 50%, #9BFFF1 100%) 0% 0% no-repeat padding-box",
                     height: "8px",
                     display: "flex",
                     borderRadius: "100px",
@@ -233,17 +235,13 @@ function HeadLine({ text, color = "#14B483" }: { text: string, color?: string })
                     lineHeight: "1",
                     fontWeight: "bold",
                     color: color,
-                    flex: "1",
-                    marginBottom: "24px",
                     textAlign: "center",
                 }}
-            >
-                {text as string}
-            </div>
+            >{text as string}</div>
             {/* <div
                 style={{
-                    background:
-                        "linear-gradient(270deg, #FEDCF5 0%, #FDFFC7 50%, #9BFFF1 100%) 0% 0% no-repeat padding-box",
+                    // background:
+                    //     "linear-gradient(270deg, #FEDCF5 0%, #FDFFC7 50%, #9BFFF1 100%) 0% 0% no-repeat padding-box",
                     height: "8px",
                     display: "flex",
                     borderRadius: "100px",
