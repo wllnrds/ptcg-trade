@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
         {
-            minify,
+            // minify,
             encodedData,
         },
         { status: 200 }
