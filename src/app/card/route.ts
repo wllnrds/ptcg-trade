@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
     const headers = new Headers();
     headers.set("Content-Type", "image/png");
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
+    headers.set("Filename", `${colecao}-${id}.png`);
 
     console.timeEnd("CardImage");
     return new NextResponse(blob, {

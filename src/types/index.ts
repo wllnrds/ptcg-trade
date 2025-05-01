@@ -9,6 +9,7 @@ export type TData = {
     id: string;
     have: TCard[];
     want: TCard[];
+    backgroundId?: string;
 };
 
 export type TMininifyData = {
@@ -17,6 +18,7 @@ export type TMininifyData = {
     id: string;
     h: TMinifyCard[];
     w: TMinifyCard[];
+    bg?: string;
 };
 
 export type TMinifyCard = {

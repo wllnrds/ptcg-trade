@@ -20,6 +20,7 @@ export function unzipData(data: string): TData {
         id: parsedData.id,
         have: have,
         want: want,
+        backgroundId: parsedData.bg,
     };
 }
 
@@ -40,6 +41,7 @@ export function minifyData(data: TData): TMininifyData {
         id: data.id,
         h: have,
         w: want,
+        bg: data.backgroundId,
     };
 }
 

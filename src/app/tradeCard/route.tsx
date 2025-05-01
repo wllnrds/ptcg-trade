@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
         }else{
             data = JSON.parse(dataString) as TData;
             console.timeLog("TradeCard", "Data parsed");
+            console.log(data)
         }
 
         if (!data) {
@@ -60,7 +61,7 @@ export async function GET(request: NextRequest) {
 
         const image = new ImageResponse(<Screen {...data} />, {
             width: 1080,
-            height: 1920,
+            height: 1600,
             fonts: [
                 {
                     name: "Open Sans",
@@ -74,11 +75,16 @@ export async function GET(request: NextRequest) {
                     style: "normal",
                     weight: 700,
                 },
+                {
+                    name: "Open Sans",
+                    data: await loadGoogleFont("Open+Sans:wght@300"),
+                    style: "normal",
+                    weight: 300,
+                },
             ],
         });
 
         console.timeLog("TradeCard", "Image generated");
-
         console.timeEnd("TradeCard");
         return image;
     } catch (error) {
