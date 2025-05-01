@@ -288,6 +288,7 @@ function Block({ title, cards, color = "#14B483" }: { title: string; cards: TCar
                     flexDirection: "row",
                     flexWrap: "wrap",
                     justifyContent: "space-between",
+                    rowGap: "24px"
                 }}
             >
                 {cards.slice(0, showPlus ? 7 : 8).map((card) => {
