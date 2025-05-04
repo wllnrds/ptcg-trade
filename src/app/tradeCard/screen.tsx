@@ -3,8 +3,34 @@ import { TCard, TData } from "@/types";
 
 const BASE_URL = "https://ptcg-trade.vercel.app";
 // const BASE_URL = "http://localhost:3000"
+const TEXTING = {
+    pt: {
+        have: "Tenho",
+        want: "Preciso",
+    },
+    en: {
+        have: "Have",
+        want: "Want",
+    },
+    es: {
+        have: "Tengo",
+        want: "Necesito",
+    }
+}
 
-export function Screen({ name, id, have, want, backgroundId }: Omit<TData, "icon">) {
+function getTexting(language: string, key: string) {
+    if (language === "pt") {
+        return TEXTING.pt[key as keyof typeof TEXTING.pt];
+    } else if (language === "en") {
+        return TEXTING.en[key as keyof typeof TEXTING.en];
+    } else if (language === "es") {
+        return TEXTING.es[key as keyof typeof TEXTING.es];
+    } else {
+        return TEXTING.pt[key as keyof typeof TEXTING.pt]; // Default to Portuguese
+    }
+}
+
+export function Screen({ name, id, have, want, backgroundId, language = "pt", noProxy = false }: Omit<TData, "icon">) {
     let backgroundTheme : any = {
         backgroundColor: "#1E3771",
         background: "linear-gradient(180deg, #111828 0%, #1E3771 100%) 0% 0% no-repeat padding-box",
@@ -82,8 +108,8 @@ export function Screen({ name, id, have, want, backgroundId }: Omit<TData, "icon
                         gap: "48px",
                     }}
                 >
-                    <Block title="Preciso" cards={want.slice(0, 4)} color="#2D84DB"/>
-                    <Block title="Tenho" cards={have} />
+                    <Block language={ language } title={ getTexting( language, "want" ) } noProxy={ noProxy } cards={want.slice(0, 4)} color="#2D84DB"/>
+                    <Block language={ language } title={ getTexting( language, "have" ) } noProxy={ noProxy } cards={have} />
                 </div>                
             </div>
         </div>
@@ -252,7 +278,7 @@ function HeadLine({ text, color = "#14B483" }: { text: string, color?: string })
     );
 }
 
-function Block({ title, cards, color = "#14B483" }: { title: string; cards: TCard[], color?: string }) {
+function Block({ title, cards, color = "#14B483", language = "pt", noProxy = false }: { title: string; cards: TCard[], color?: string, language?: string | "pt" | "en" | "es", noProxy: boolean }) {
     let baseWidth = "215px";
     let baseHeight = "300px";
 
@@ -285,11 +311,13 @@ function Block({ title, cards, color = "#14B483" }: { title: string; cards: TCar
                     display: "flex",
                     flexDirection: "row",
                     flexWrap: "wrap",
-                    justifyContent: "space-between",
+                    justifyContent: "space-around",
                     rowGap: "24px"
                 }}
             >
                 {cards.slice(0, showPlus ? 7 : 8).map((card) => {
+                    const cardRoute = noProxy ? `static/cards/${card.colecao}/${card.id}_${ language }.jpg` : `card?colecao=${card.colecao}&id=${card.id}&lang=${language}`;
+
                     return (
                         <div
                             key={card.id}
@@ -309,7 +337,7 @@ function Block({ title, cards, color = "#14B483" }: { title: string; cards: TCar
                             }}
                         >
                             <img
-                                src={`${BASE_URL}/card?colecao=${card.colecao}&id=${card.id}`}
+                                src={`${BASE_URL}/${ cardRoute }`}
                                 width={baseWidth}
                                 height={baseHeight}
                                 style={{

@@ -10,6 +10,8 @@ export type TData = {
     have: TCard[];
     want: TCard[];
     backgroundId?: string;
+    language?: string | "pt" | "en" | "es";
+    noProxy?: boolean;
 };
 
 export type TMininifyData = {

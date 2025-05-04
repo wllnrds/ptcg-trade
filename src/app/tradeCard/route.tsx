@@ -8,6 +8,8 @@ export const revalidate = 0;
 export const maxDuration = 60; 
 
 export async function GET(request: NextRequest) {
+    const start = process.hrtime();
+
     console.time("TradeCard");
     console.timeLog("TradeCard", "Start generating image");
     try {
@@ -17,22 +19,25 @@ export async function GET(request: NextRequest) {
 
         const searchParams = request.nextUrl.searchParams;
         const dataQuery = searchParams.get("data");
+
+        const noProxy = searchParams.get("noProxy") === "true";
+        const language = searchParams.get("lang") || "en";
         
-        console.timeLog("TradeCard", "Data query", dataQuery);
+        // console.timeLog("TradeCard", "Data query", dataQuery);
 
         const dataString = atob(dataQuery as string);
 
-        console.timeLog("TradeCard", "Data string decoded");;
+        // console.timeLog("TradeCard", "Data string decoded");;
 
         const dataVersion = searchParams.get("version");
         let data : TData | null = null;
 
         if (dataVersion === "2") {
             data = unzipData(dataString);
-            console.timeLog("TradeCard", "Data unzipped");
+            // console.timeLog("TradeCard", "Data unzipped");
         }else{
             data = JSON.parse(dataString) as TData;
-            console.timeLog("TradeCard", "Data parsed");
+            // console.timeLog("TradeCard", "Data parsed");
             console.log(data)
         }
 
@@ -59,7 +64,7 @@ export async function GET(request: NextRequest) {
         
         console.timeLog("TradeCard", "Start generating image");
 
-        const image = new ImageResponse(<Screen {...data} />, {
+        const image = new ImageResponse(<Screen {...data} language={ language || "pt" } noProxy={ noProxy } />, {
             width: 1080,
             height: 1600,
             fonts: [
@@ -84,7 +89,13 @@ export async function GET(request: NextRequest) {
             ],
         });
 
-        console.timeLog("TradeCard", "Image generated");
+        const elapsed = process.hrtime(start);
+
+        const elapsedMs = (elapsed[0] * 1000 + elapsed[1] / 1e6).toFixed(2);
+
+        image.headers.set('Server-Timing', `card_generation_time;dur=${elapsedMs}`);
+
+        console.timeLog("TradeCard", "Final Image generated");
         console.timeEnd("TradeCard");
         return image;
     } catch (error) {
