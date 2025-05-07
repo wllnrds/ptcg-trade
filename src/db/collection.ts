@@ -34,6 +34,12 @@ const database = [
         "colecao": "0006-FestivalBrilhante",
         "minId": 1,
         "maxId": 111
+    },
+    {
+        "id":7,
+        "colecao": "0007-GuardioesCelestiais",
+        "minId": 1,
+        "maxId": 239
     }
 ];
 
